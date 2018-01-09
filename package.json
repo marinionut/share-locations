@@ -1,0 +1,47 @@
+{
+  "name": "ktms",
+  "version": "0.0.1",
+  "author": "Doru Preda <doru.preda@kapsch.net>",
+  "contributors": [
+    "Elliot Hesp <elliot.hesp@gmail.com> (https://github.com/rdash/rdash-angular)",
+    "Leonel Samayoa <leonel.e.samayoa@gmail.com> (http://gobliip.com)",
+    "Ricardo Pascua <rdpascua@outlook.com>"
+  ],
+  "devDependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-less": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.1",
+    "gulp-usemin": "^0.3.28",
+    "pump": "^1.0.2"
+  },
+  "dependencies": {
+    "@bower_components/angular": "angular/bower-angular#^1.6.2",
+    "@bower_components/angular-animate": "angular/bower-angular-animate#^1.6.2",
+    "@bower_components/angular-bootstrap": "angular-ui/bootstrap-bower#^2.5.0",
+    "@bower_components/angular-cookies": "angular/bower-angular-cookies#^1.6.2",
+    "@bower_components/angular-table": "samu/angular-table#master",
+    "@bower_components/angular-ui-router": "angular-ui/angular-ui-router-bower#^0.4.1",
+    "@bower_components/bootstrap": "twbs/bootstrap#^3.3.7",
+    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^4.7.0",
+    "@bower_components/jquery": "jquery/jquery#^3.2.1",
+    "@bower_components/rdash-ui": "rdash/rdash-ui#1.0.*",
+    "csv": "^2.0.0",
+    "gulp-util": "^3.0.8",
+    "mysql": "^2.15.0"
+  },
+  "resolutions": {
+    "angular": "^1.6.2"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
+  },
+  "scripts": {
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'src/components', 'junction') } catch (e) { }\""
+  }
+}
