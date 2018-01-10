@@ -1,5 +1,5 @@
 {
-  "name": "ktms",
+  "name": "share_locations",
   "version": "0.0.1",
   "author": "Doru Preda <doru.preda@kapsch.net>",
   "contributors": [
@@ -31,6 +31,10 @@
     "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^4.7.0",
     "@bower_components/jquery": "jquery/jquery#^3.2.1",
     "@bower_components/rdash-ui": "rdash/rdash-ui#1.0.*",
+    "@bower_components/leaflet": "Leaflet/Leaflet#^0.7.7",
+    "@bower_components/angular-leaflet-directive": "tombatossals/angular-leaflet-directive#master",
+    "@bower_components/leaflet.markercluster": "Leaflet/Leaflet.markercluster#leaflet-0.7",
+    "@bower_components/leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#^2.0.2",
     "csv": "^2.0.0",
     "gulp-util": "^3.0.8",
     "mysql": "^2.15.0"
