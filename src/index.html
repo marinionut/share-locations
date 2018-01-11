@@ -40,8 +40,7 @@
       <ul class="sidebar">
         <li class="sidebar-main">
           <a ng-click="toggleSidebar()">
-            {{pageName}}
-            <!-- <img src="img/pic.png" style="width: 64%;"> -->
+            <span ng-hide="memberinfo == null">{{pageName}}</span>
             <span class="menu-icon glyphicon glyphicon-transfer"></span>
           </a>
         </li>

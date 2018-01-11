@@ -37,14 +37,22 @@ angular.module('RDash')
     }
 ])
 
-.run(['$rootScope', '$state', 'AuthService', 
-    function($rootScope, $state, AuthService) {
+.run(['$rootScope', '$state', '$http', 'AuthService', 
+    function($rootScope, $state, $http, AuthService) {
         $rootScope.$on('$stateChangeStart', function (event, next) {
             if (!AuthService.isAuthenticated()) {
               if (next.name !== 'login') {
                 event.preventDefault();
                 $state.go('login');
               }
+            } else {
+            	if(!angular.isDefined($rootScope.memberinfo)) {
+            		$http({method: 'GET', url: '/api/memberinfo'}).
+            		then(function(response) {
+            			if(response.data.success)
+            				$rootScope.memberinfo = response.data.msg;
+            		});
+            	}
             }
         });
     }
