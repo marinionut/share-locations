@@ -1,7 +1,7 @@
 angular.module('RDash')
-	.controller('DashboardCtrl', ['$scope', DashboardCtrl]);
+	.controller('DashboardCtrl', ['$scope', '$rootScope', DashboardCtrl]);
 
-function DashboardCtrl($scope) {
+function DashboardCtrl($scope, $rootScope) {
 	$scope.height = window.innerHeight;
 	$scope.bucharest = {
 		lat: 44.43328953788211,

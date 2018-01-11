@@ -14,7 +14,10 @@ var bodyParser = require('body-parser'),
 	mysql = require('mysql'),
 	path = require('path'),
 	pump = require('pump'),
-    csv = require('csv');
+	passport = require('passport'),
+	JwtStrategy = require('passport-jwt').Strategy,
+	ExtractJwt = require('passport-jwt').ExtractJwt,
+	jwt = require('jwt-simple');
 var dbConfig = require('./config').DB;
 
 var paths = {
@@ -128,16 +131,87 @@ gulp.task('watch', function() {
  * Express web server
  */
 gulp.task('express', function() {
+	var dbConnection = mysql.createConnection(dbConfig);
+
 	var app = express();
 	var router = express.Router();
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(passport.initialize());
 	app.use(express.static(path.join(__dirname, 'dist')));
 
-	var dbConnection = mysql.createConnection(dbConfig);
+	var opts = {};
+	opts.secretOrKey = dbConfig.database;
+	opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 
-	router.get('/test_link', function(req, res) {
-		res.send("OK");
+	passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+		var select_sql = "SELECT * FROM users WHERE username = ?";
+		select_sql = mysql.format(select_sql, jwt_payload.username);
+		dbConnection.query(select_sql, function(error, results, fields) {
+			if(results.length == 1) {
+				done(null, results[0]);
+			} else {
+				done(null, false);
+			}
+		});
+	}));
+
+	router.post('/api/authenticate', function(req, res) {
+		var select_sql = "SELECT * FROM users WHERE username = ?";
+		if(req.body.username) {
+			select_sql = mysql.format(select_sql, req.body.username);
+			dbConnection.query(select_sql,  function(error, results, fields) {
+				if(results.length == 0) {
+					res.send({success: false, msg:'Nume utilizator gresit!'});
+				} else {
+					if(req.body.password) {
+						if(results[0].password === req.body.password) {
+							console.log("Logare "+results[0].username);
+							var token = jwt.encode(results[0], dbConfig.database);
+							res.json({success: true, token: 'JWT ' + token, msg: 'Authentification '});
+						} else {
+							res.send({success: false, msg:'Parola gresita!'});
+						}	
+					} else {
+						res.send({success: false, msg:'Parola necompletata!'});
+					}
+				}
+			});	
+		} else {
+			res.send({success: false, msg:'Nume utilizator necompletat!'});
+		}
+	});
+
+	router.get('/api/memberinfo', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var getToken = function(headers) {
+			if(headers && headers.authorization) {
+				var parted = headers.authorization.split(' ');
+				if(parted.length == 2) {
+					return parted[1];
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+
+		var token = getToken(req.headers);
+		if(token) {
+			var decoded = jwt.decode(token, dbConfig.database);
+			var select_sql = "SELECT * FROM users WHERE username = ?";
+			select_sql = mysql.format(select_sql, decoded.username);
+			dbConnection.query(select_sql, function(error, results, fields) {
+				if(results.length == 1) {
+					var info = {username: decoded.username, familie: decoded.family};
+					res.json({success: true, msg: info});
+				} else {
+					res.status(403).send({success: false, msg: 'Nume utilizator inexistent!'});
+				}
+			});
+		} else {
+			res.status(403).send({success: false, msg: 'Nu exista token!'});
+		}
 	});
 
 	app.use('/', router);

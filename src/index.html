@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>KTMS</title>
+	<title>Share Locations</title>
   <!-- STYLES -->
   <!-- build:css lib/css/main.min.css -->
   <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
@@ -29,7 +29,7 @@
   <script type="text/javascript" src="components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
   <script type="text/javascript" src="components/leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>
   <!-- endbuild -->
-  <!-- <link rel="shortcut icon" href="img/favicon.ico"/> -->
+  <link rel="shortcut icon" href="img/favicon.ico"/>
   <!-- Custom Scripts -->
   <script type="text/javascript" src="js/dashboard.min.js"></script>
 </head>
@@ -40,20 +40,26 @@
       <ul class="sidebar">
         <li class="sidebar-main">
           <a ng-click="toggleSidebar()">
+            {{pageName}}
             <!-- <img src="img/pic.png" style="width: 64%;"> -->
             <span class="menu-icon glyphicon glyphicon-transfer"></span>
           </a>
         </li>
-        <li class="sidebar-list">
+        <li class="sidebar-list" ng-hide="memberinfo == null">
           <a href="#">Harta <span class="menu-icon fa fa-map"></span></a>
         </li>
-        <li class="sidebar-list">
-          <a href="#!/templates">Familie <span class="menu-icon fa fa-users"></span></a>
+        <li class="sidebar-list" ng-hide="memberinfo == null">
+          <a href="#!/familie">Familie <span class="menu-icon fa fa-users"></span></a>
         </li>
-        <li class="sidebar-list">
+        <li class="sidebar-list" ng-hide="memberinfo == null">
           <a href="#!/importExport">Import/Export <span class="menu-icon fa fa-sort"></span></a>
         </li>
       </ul>
+      <div class="sidebar-footer">
+        <span style="display: inline-block;">
+          <label type="button" class="btn btn-danger" ng-click="logout()" ng-hide="memberinfo == null" style="margin-top: 3px;">Logout <span class="fa fa-sign-out"></span></label>
+        </span>
+      </div>
     </div>
     <!-- End Sidebar -->
     <div id="content-wrapper">
