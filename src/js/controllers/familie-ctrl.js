@@ -1,6 +1,6 @@
 angular.module('RDash')
-	.controller('FamilieCtrl', ['$scope', FamilieCtrl]);
+	.controller('FamilieCtrl', ['$scope', '$rootScope', FamilieCtrl]);
 
-function FamilieCtrl($scope) {
-	
+function FamilieCtrl($scope, $rootScope) {
+	console.log($rootScope.memberinfo);
 }

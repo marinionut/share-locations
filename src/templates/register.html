@@ -1,14 +1,13 @@
-<div ng-controller="LoginCtrl">
+<div ng-controller="RegisterCtrl">
 <br><br>
 <div class="row">
 	<div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
 	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 		<form class="form-signin">
-			<h2 class="form-signin-heading" style="text-align: center;">Autentificare</h2>
+			<h2 class="form-signin-heading" style="text-align: center;">Inregistrare</h2>
 			<input type="text" class="form-control" style="margin-bottom: 5px;" placeholder="Nume utilizator" required autofocus ng-model="user.username">
 			<input type="password" class="form-control" style="margin-top: 5px;margin-bottom: 5px;" placeholder="Parola" required ng-model="user.password">
-			<button class="btn btn-lg btn-primary btn-block" ng-click="login()">Log in  <span class="fa fa-sign-in"></span></button>
-			<button class="btn btn-lg btn-success btn-block" ng-click="register()">Inregistrare <span class="fa fa-user-plus"></span></button>
+			<button class="btn btn-lg btn-success btn-block" ng-click="addUser()">Adauga utilizator <span class="fa fa-check"></span></button>
 		</form>
 	</div>
 </div>
@@ -16,12 +15,6 @@
 	<div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
 	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
 		<h3 style="color: red; margin-top: 0px; text-align: center;">{{ failMessage }}</h2>
-	</div>
-</div>
-<div class="row">
-	<div class="col-lg-4 col-md-4 col-sm-2 col-xs-2"></div>
-	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-		<h3 style="color: green; margin-top: 0px; text-align: center;">{{ successMessage }}</h3>
 	</div>
 </div>
 </div>

@@ -156,6 +156,39 @@ gulp.task('express', function() {
 		});
 	}));
 
+	router.post('/api/register', function(req, res) {
+		var checkUsername = function(username, password) {
+			var select_sql = "SELECT username FROM users WHERE username = ?";
+			select_sql = mysql.format(select_sql, username);
+			dbConnection.query(select_sql, function(error, results, fields) {
+				if(results.length == 0) {
+					insertUser(username, password);
+				} else {
+					res.send({success: false, msg: 'Nume de utilizator existent!'});
+				}
+			});
+		}
+
+		var insertUser = function(username, password) {
+			var insert_sql = "INSERT INTO users(username, password, family) VALUES (?, ?, 1)";
+			insert_sql = mysql.format(insert_sql, [req.body.username, req.body.password]);
+			dbConnection.query(insert_sql, function(error, results, fields) {
+				if(results.affectedRows == 1) {
+					gutil.log("Utilizator inregistrat: "+username);
+					res.send({success: true, msg: 'Inregistrare efectuata!'});
+				} else {
+					res.send({success: false, msg: 'Eroare la adaugare utilizator!'});	
+				}
+			});
+		}
+
+		if(req.body.username && req.body.password){
+			checkUsername(req.body.username, req.body.password);
+		} else {
+			res.send({success: false, msg: 'Completati numele de utilizator cat si parola!'});
+		}
+	});
+
 	router.post('/api/authenticate', function(req, res) {
 		var select_sql = "SELECT * FROM users WHERE username = ?";
 		if(req.body.username) {
@@ -166,7 +199,7 @@ gulp.task('express', function() {
 				} else {
 					if(req.body.password) {
 						if(results[0].password === req.body.password) {
-							console.log("Logare "+results[0].username);
+							gutil.log("Utilizator autentificat: "+results[0].username);
 							var token = jwt.encode(results[0], dbConfig.database);
 							res.json({success: true, token: 'JWT ' + token, msg: 'Authentification '});
 						} else {
@@ -218,7 +251,7 @@ gulp.task('express', function() {
 	var server = http.createServer(app);
     var HTTP_PORT = 8888;
     server.listen(HTTP_PORT, function() {
-        console.log("Listening on port "+HTTP_PORT);
+        gutil.log("Listening on port "+HTTP_PORT);
     });
 });
 

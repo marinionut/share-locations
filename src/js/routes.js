@@ -33,6 +33,10 @@ angular.module('RDash')
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/login.html'
+            })
+            .state('register', {
+                url: '/register',
+                templateUrl: 'templates/register.html'
             });
     }
 ])
@@ -41,12 +45,12 @@ angular.module('RDash')
     function($rootScope, $state, $http, AuthService) {
         $rootScope.$on('$stateChangeStart', function (event, next) {
             if (!AuthService.isAuthenticated()) {
-              if (next.name !== 'login') {
+              if (next.name !== 'login' && next.name !== 'register') {
                 event.preventDefault();
                 $state.go('login');
               }
             } else {
-            	if(!angular.isDefined($rootScope.memberinfo)) {
+            	if(!angular.isDefined($rootScope.memberinfo) && next.name !== 'register') {
             		$http({method: 'GET', url: '/api/memberinfo'}).
             		then(function(response) {
             			if(response.data.success)
