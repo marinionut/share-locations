@@ -9,21 +9,26 @@ function DashboardCtrl($scope, $rootScope) {
 		zoom: 12
 	};
 	$scope.markers = {};
+
 	$scope.layers = {
-		baselayers: {
-			osm: {
-				name: "OpenStreetMap",
-				type: "xyz",
-				url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-				layerOptions: {
-					subdomains: ['a', 'b', 'c'],
-					attribution: "© OpenStreetMap contributors",
-					continuousWorld: true
-				}
-			}
-		},
-		overlays: {}
-	}
+        baselayers: {
+        	googleRoadmap: {
+                name: 'Google Streets',
+                layerType: 'ROADMAP',
+                type: 'google'
+            },
+            googleTerrain: {
+                name: 'Google Terrain',
+                layerType: 'TERRAIN',
+                type: 'google'
+            },
+            googleHybrid: {
+                name: 'Google Hybrid',
+                layerType: 'HYBRID',
+                type: 'google'
+            }
+        }
+    }
 
 	$scope.$on("leafletDirectiveMarker.dragend", function(event, args){
 		console.log(args.modelName+"_"+args.model.lat+"_"+args.model.lng);

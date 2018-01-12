@@ -37,6 +37,7 @@
     "@bower_components/leaflet": "Leaflet/Leaflet#v0.7.7",
     "@bower_components/leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#^2.0.2",
     "@bower_components/leaflet.markercluster": "Leaflet/Leaflet.markercluster#leaflet-0.7",
+    "@bower_components/leaflet-plugins": "shramov/leaflet-plugins#2.0.0",
     "@bower_components/rdash-ui": "rdash/rdash-ui#1.0.*",
     "gulp-util": "^3.0.8",
     "jwt-simple": "^0.5.1",

@@ -208,7 +208,6 @@ gulp.task('express', function() {
 		var delete_sql = "DELETE FROM families WHERE id = ?";
 		delete_sql = mysql.format(delete_sql, req.params.id);
 		dbConnection.query(delete_sql, function(error, results, fields) {
-			console.log(results);
 			if(results.affectedRows == 1) {
 				res.send({success: true, msg: "Familie stearsa!"});
 			} else {

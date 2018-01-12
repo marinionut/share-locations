@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2018 at 03:18 AM
+-- Generation Time: Jan 12, 2018 at 10:49 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -30,11 +30,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
-  `username` int(11) NOT NULL,
-  `familie` int(11) NOT NULL
+  `message` varchar(500) NOT NULL,
+  `uid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -55,7 +54,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
