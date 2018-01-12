@@ -1,3 +1,73 @@
 <div ng-controller="FamilieCtrl">
-	
+	<!-- fara familie -->
+	<div ng-hide="memberinfo.familie != 1">
+		<div class="row" style="text-align: center;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h3>Alege o familie deja existenta</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-2"></div>
+			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12" style="text-align: center;">
+				<form class="form-inline">
+					<select class="form-control" ng-options="family as family.nume for family in families" ng-model="selectedFamily"></select>
+					<label type="button" class="btn btn-primary" ng-click="pickFamily()">Alege familie</label>
+				</form>
+			</div>
+		</div>
+		<div class="row" style="text-align: center;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h1>SAU</h1>
+			</div>
+		</div>
+		<div class="row" style="text-align: center;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h3>Defineste familie noua</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-2"></div>
+			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Nume familie" ng-model="newFamily.nume">
+					<span class="input-group-btn">
+						<button class="btn btn-success" type="button" ng-click="addFamily()">Adauga familie<span class="fa fa-plus" style="padding-left: 5px;"></span></button>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-2"></div>
+			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12" style="color: red; text-align: center;">{{ failMessage }}</div>
+		</div>
+	</div>
+	<!-- cu familie -->
+	<div ng-hide="memberinfo.familie == 1">
+		<div class="row">
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="text-align: center;">
+				<h1>Familia {{ currentFamily.nume }}</h1>
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="text-align: right;">
+				<label type="button" class="btn btn-danger" ng-click="leaveFamily()" style="white-space: normal; margin-top: 15px;">Paraseste familia<span class="fa fa-times" style="padding-left: 5px;"></span></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-2"></div>
+			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+				<table class="table table-bordered table-striped table-hover" at-table at-list="familyMembers" at-config="config">
+					<thead>
+						<tr>
+							<th style="text-align: center;" at-attribute="username">Membrii</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td at-implicit at-sortable at-attribute="username" style="vertical-align: middle; text-align: center;"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>	
+	</div>
 </div>

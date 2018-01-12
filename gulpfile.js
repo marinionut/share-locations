@@ -156,7 +156,55 @@ gulp.task('express', function() {
 		});
 	}));
 
-	router.post('/api/register', function(req, res) {
+	router.get('/api/families/:id?', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var select_sql = "SELECT * FROM families";
+		if(req.params.id) {
+			select_sql += " WHERE id = ?";
+			select_sql = mysql.format(select_sql, req.params.id);
+		}
+		dbConnection.query(select_sql, function(error, results, fields) {
+			if(results.length != 0) {
+				res.json(results);
+			} else {
+				res.send("fail");
+			}
+		});
+	});
+
+	router.put('/api/family', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var checkName = function(nume) {
+			var select_sql = "SELECT nume FROM families WHERE nume = ?";
+			select_sql = mysql.format(select_sql, req.body.nume);
+			dbConnection.query(select_sql, function(error, results, fields) {
+				if(results.length == 0) {
+					insertFamily(nume);
+				} else {
+					res.send({success: false, msg: 'Nume de familie existent!'});
+				}
+			});
+		}
+
+		var insertFamily = function(nume) {
+			var insert_sql = "INSERT INTO families(nume) VALUES (?)";	
+			insert_sql = mysql.format(insert_sql, req.body.nume);
+			dbConnection.query(insert_sql, function(error, results, fields) {
+				if(results.affectedRows == 1) {
+					gutil.log("Familie inregistrata: "+req.body.nume);
+					res.send({success: true, msg: results.insertId});
+				} else {
+					res.send({success: false, msg: "Eroare la adaugarea familiei!"});
+				}
+			});
+		}
+
+		if(req.body.nume) {
+			checkName(req.body.nume);
+		} else {
+			res.send({success: false, msg: 'Completati numele de familie!'});
+		}
+	});
+
+	router.put('/api/register', function(req, res) {
 		var checkUsername = function(username, password) {
 			var select_sql = "SELECT username FROM users WHERE username = ?";
 			select_sql = mysql.format(select_sql, username);
@@ -236,7 +284,7 @@ gulp.task('express', function() {
 			select_sql = mysql.format(select_sql, decoded.username);
 			dbConnection.query(select_sql, function(error, results, fields) {
 				if(results.length == 1) {
-					var info = {username: decoded.username, familie: decoded.family};
+					var info = {id: results[0].id, username: results[0].username, familie: results[0].family};
 					res.json({success: true, msg: info});
 				} else {
 					res.status(403).send({success: false, msg: 'Nume utilizator inexistent!'});
@@ -245,6 +293,31 @@ gulp.task('express', function() {
 		} else {
 			res.status(403).send({success: false, msg: 'Nu exista token!'});
 		}
+	});
+
+	router.post('/api/user/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var update_sql = "UPDATE users SET family = ? WHERE id = ?";
+		update_sql = mysql.format(update_sql, [req.body.id, req.params.id]);
+		dbConnection.query(update_sql, function(error, results, fields) {
+			if(results.affectedRows == 1) {
+				gutil.log("Familie actualizata!");
+				res.send({success: true, msg: 'Familie actualizata!'});
+			} else {
+				res.send({success: false, msg: 'Eroare la actualizare familie utilizator!'});
+			}
+		});
+	});
+
+	router.get('/api/members/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var select_sql = "SELECT * FROM users WHERE family = ?";
+		select_sql = mysql.format(select_sql, req.params.id);
+		dbConnection.query(select_sql, function(error, results, fields) {
+			if(results.length > 0) {
+				res.json(results);
+			} else {
+				res.send("fail");
+			}
+		});
 	});
 
 	app.use('/', router);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2018 at 11:16 PM
+-- Generation Time: Jan 12, 2018 at 03:17 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -25,38 +25,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `locations`
+-- Table structure for table `families`
 --
 
-CREATE TABLE `locations` (
+CREATE TABLE `families` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `latitude` double DEFAULT NULL,
-  `longitude` double DEFAULT NULL,
-  `username` int(11) NOT NULL,
-  `familie` int(11) NOT NULL
+  `nume` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `families`
+--
+
+INSERT INTO `families` (`id`, `nume`) VALUES
+(1, 'Fara familie!');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `locations`
+-- Indexes for table `families`
 --
-ALTER TABLE `locations`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `locations_id_uindex` (`id`);
+ALTER TABLE `families`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `locations`
+-- AUTO_INCREMENT for table `families`
 --
-ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `families`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
