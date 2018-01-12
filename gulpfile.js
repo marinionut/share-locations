@@ -336,6 +336,8 @@ gulp.task('express', function() {
 		var select_sql = "SELECT l.latitude, l.longitude, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
 		select_sql = mysql.format(select_sql, req.params.id);
 		dbConnection.query(select_sql, function(error, results, fields) {
+			console.log(results);
+			console.log(error);
 			if(results.length > 0) {
 				res.json(results);
 			} else {
@@ -345,6 +347,7 @@ gulp.task('express', function() {
 	});
 
 	router.put('/api/locations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		console.log(req.body);
 		var insert_sql = "INSERT INTO locations(latitude, longitude, message, uid) VALUES ";
 		for(var i=0; i<req.body.length; i++) {
 			insert_sql += "("+req.body[i].lat+", "+req.body[i].lng+", '"+req.body[i].message+"', "+req.params.id+")";
@@ -352,7 +355,9 @@ gulp.task('express', function() {
 				insert_sql += ", "
 		}
 		dbConnection.query(insert_sql, function(error, results, fields) {
-			res.send(results.affectedRows);
+			console.log(results);
+			console.log(error);
+			res.send(results);
 		});
 	});
 
