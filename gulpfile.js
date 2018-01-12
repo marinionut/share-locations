@@ -344,6 +344,18 @@ gulp.task('express', function() {
 		});
 	});
 
+	router.put('/api/locations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var insert_sql = "INSERT INTO locations(latitude, longitude, message, uid) VALUES ";
+		for(var i=0; i<req.body.length; i++) {
+			insert_sql += "("+req.body[i].lat+", "+req.body[i].lng+", '"+req.body[i].message+"', "+req.params.id+")";
+			if(i < req.body.length-1)
+				insert_sql += ", "
+		}
+		dbConnection.query(insert_sql, function(error, results, fields) {
+			res.send(results.affectedRows);
+		});
+	});
+
 	app.use('/', router);
 	var server = http.createServer(app);
     var HTTP_PORT = 8888;
