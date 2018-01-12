@@ -204,6 +204,19 @@ gulp.task('express', function() {
 		}
 	});
 
+	router.delete('/api/family/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var delete_sql = "DELETE FROM families WHERE id = ?";
+		delete_sql = mysql.format(delete_sql, req.params.id);
+		dbConnection.query(delete_sql, function(error, results, fields) {
+			console.log(results);
+			if(results.affectedRows == 1) {
+				res.send({success: true, msg: "Familie stearsa!"});
+			} else {
+				res.send({success: false, msg: "Eroare la stergerea familiei!"});
+			}
+		});
+	});
+
 	router.put('/api/register', function(req, res) {
 		var checkUsername = function(username, password) {
 			var select_sql = "SELECT username FROM users WHERE username = ?";
@@ -310,6 +323,18 @@ gulp.task('express', function() {
 
 	router.get('/api/members/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
 		var select_sql = "SELECT * FROM users WHERE family = ?";
+		select_sql = mysql.format(select_sql, req.params.id);
+		dbConnection.query(select_sql, function(error, results, fields) {
+			if(results.length > 0) {
+				res.json(results);
+			} else {
+				res.send("fail");
+			}
+		});
+	});
+
+	router.get('/api/locations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
+		var select_sql = "SELECT l.latitude, l.longitude, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
 		select_sql = mysql.format(select_sql, req.params.id);
 		dbConnection.query(select_sql, function(error, results, fields) {
 			if(results.length > 0) {

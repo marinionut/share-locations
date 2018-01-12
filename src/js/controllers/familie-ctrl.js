@@ -64,8 +64,15 @@ function FamilieCtrl($scope, $rootScope, $http) {
 
 	$scope.leaveFamily = function() {
 		$scope.selectedFamily = {id: 1, nume: ""};
+		if($scope.familyMembers.length == 1)
+			$scope.deleteFamily($rootScope.memberinfo.familie);
 		$scope.familyMembers = [];
 		$scope.pickFamily();
+	}
+
+	$scope.deleteFamily = function(familyId) {
+		$http({method: 'DELETE', url: '/api/family/'+familyId}).
+		then(function(response) {});
 	}
 
 	if($rootScope.memberinfo.familie != 1)
