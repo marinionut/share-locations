@@ -333,7 +333,7 @@ gulp.task('express', function() {
 	});
 
 	router.get('/api/locations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
-		var select_sql = "SELECT l.latitude, l.longitude, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
+		var select_sql = "SELECT l.latitude, l.longitude, l.message, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
 		select_sql = mysql.format(select_sql, req.params.id);
 		dbConnection.query(select_sql, function(error, results, fields) {
 			console.log(results);

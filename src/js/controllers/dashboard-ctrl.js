@@ -27,6 +27,7 @@ function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
                 $scope.markers.push({
                     lat: result[i].latitude,
                     lng: result[i].longitude,
+                    message: result[i].message,
                     icon: {
                         type: 'awesomeMarker',
                         icon: 'tag',
@@ -77,7 +78,8 @@ function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
-                    $scope.adresa = results[0].formatted_address;
+                    $scope.adresa = convertUtf8ToAscii(results[0].formatted_address);
+                    console.log("adresa:" + $scope.adresa);
                     $scope.markers.push({
                         lat: latlng.lat,
                         lng: latlng.lng,
@@ -111,4 +113,26 @@ function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
         });
     };
 
+    $scope.deleteAddedMarkers = function (map) {
+        for(i=0;i<$scope.markersReadyForCommit.length;i++) {
+            $scope.markers.pop();
+        }
+        $scope.markersReadyForCommit = [];
+    }
+
+    convertUtf8ToAscii = function (str) {
+        var dict = {"ă":"a", "â":"a", "î":"i", "ș":"s", "ț":"t"};
+
+        str = str.replace(/[ă]/g,"a")
+            .replace(/[â]/g,"a")
+            .replace(/[î]/g,"i")
+            .replace(/[ș]/g,"s")
+            .replace(/[ț]/g,"t")
+            .replace(/[Ă]/g,"A")
+            .replace(/[Â]/g,"A")
+            .replace(/[Î]/g,"I")
+            .replace(/[Ș]/g,"S")
+            .replace(/[Ț]/g,"T");
+        return str;
+    }
 }

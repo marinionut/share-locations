@@ -4,7 +4,8 @@
 			<leaflet id="map" lf-center="bucharest" markers="markers" layers="layers" width="100%" height="{{height-80}}" event-broadcast="events"></leaflet>
 		</div>
 		<span class="input-group-btn">
-			<button class="btn btn-success" type="button" ng-click="addNewMarkers()" ng-disabled="markersReadyForCommit.length == 0">Adauga locatii<span class="fa fa-plus" style="padding-left: 5px;"></span></button>
+			<button class="btn btn-success col-md-3" type="button" ng-click="addNewMarkers()" ng-disabled="markersReadyForCommit.length == 0">Adauga locatii<span class="fa fa-plus" style="padding-left: 5px;"></span></button>
+			<button class="btn btn-success col-md-3" type="button" ng-click="deleteAddedMarkers()" ng-disabled="markersReadyForCommit.length == 0">Sterge locatii adaugate<span class="fa fa-minus" style="padding-left: 5px;"></span></button>
 		</span>
 	</div>
 </div>
