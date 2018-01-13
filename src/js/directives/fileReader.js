@@ -5,34 +5,24 @@
 
 angular
     .module('RDash')
-    .directive('fileReader', fileReader);
+    .directive('onReadFile',['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        scope: false,
+        link: function(scope, element, attrs) {
+            var fn = $parse(attrs.onReadFile);
 
-function fileReader() {
-    var directive = {};
+            element.on('change', function(onChangeEvent) {
+                var reader = new FileReader();
 
-    directive.scope = {
-        fileReader: "=",
+                reader.onload = function(onLoadEvent) {
+                    scope.$apply(function() {
+                        fn(scope, {$fileContent:onLoadEvent.target.result});
+                    });
+                };
+
+                reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
+            });
+        }
     };
-
-    directive.link = function(scope, element) {
-        $(element).on('change', function(changeEvent) {
-            var files = changeEvent.target.files;
-            console.log(files);
-            if (files.length) {
-              var r = new FileReader();
-              r.onload = function(e) {
-                  var contents = e.target.result;
-                  scope.$apply(function () {
-                    scope.fileReader = contents;
-                  });
-              };
-              
-              r.readAsText(files[0]);
-            } else {
-                scope.fileReader = "none";
-            }
-        });
-    }
-
-    return directive;
-};
+}]);

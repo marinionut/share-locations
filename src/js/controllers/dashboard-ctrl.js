@@ -1,7 +1,7 @@
 angular.module('RDash')
-	.controller('DashboardCtrl', ['$scope', '$rootScope', '$window', '$http', 'leafletData', DashboardCtrl]);
+	.controller('DashboardCtrl', ['$scope', '$rootScope', '$window', '$http', '$q', 'leafletData', 'FileSaver', DashboardCtrl]);
 
-function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
+function DashboardCtrl($scope, $rootScope, $window, $http, $q, leafletData, FileSaver) {
 
     console.log($rootScope.memberinfo);
 
@@ -118,11 +118,21 @@ function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
             $scope.markers.pop();
         }
         $scope.markersReadyForCommit = [];
-    }
+    };
+
+    $scope.exportLocations = function () {
+        $http({method: 'GET', url: '/api/exportLocations/'+$rootScope.memberinfo.familie}).
+        then(function(response) {
+            if(response.data !== "fail") {
+                var result = response.data;
+
+                var data = new Blob([JSON.stringify(result)], { type: 'application/json' });
+                FileSaver.saveAs(data, 'locations.json');
+            }
+        })
+    };
 
     convertUtf8ToAscii = function (str) {
-        var dict = {"ă":"a", "â":"a", "î":"i", "ș":"s", "ț":"t"};
-
         str = str.replace(/[ă]/g,"a")
             .replace(/[â]/g,"a")
             .replace(/[î]/g,"i")
@@ -134,5 +144,30 @@ function DashboardCtrl($scope, $rootScope, $window, $http, leafletData) {
             .replace(/[Ș]/g,"S")
             .replace(/[Ț]/g,"T");
         return str;
-    }
+    };
+
+    $scope.showContent = function($fileContent){
+        $scope.importedFileContent = $fileContent;
+        console.log($scope.importedFileContent);
+    };
+
+
+    $scope.importLocations = function(){
+        console.log(JSON.parse($scope.importedFileContent));
+        var importedLocations = [];
+        importedLocations = JSON.parse($scope.importedFileContent);
+
+        $http({method: 'PUT', data: importedLocations, url: '/api/importLocations/' + $rootScope.memberinfo.id}).
+        then(function(response) {
+            console.log(response.data);
+            for(var i = 0 ; i < importedLocations.length; i++) {
+                $scope.markers.push({
+                    lat: importedLocations[i].latitude,
+                    lng: importedLocations[i].longitude,
+                    message: importedLocations[i].message
+                });
+            }
+            alert("Locations added!");
+        });
+    };
 }

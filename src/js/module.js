@@ -1,1 +1,1 @@
-angular.module('RDash', ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngAnimate', 'angular-table', 'leaflet-directive']);
+angular.module('RDash', ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngAnimate', 'angular-table', 'leaflet-directive', 'ngFileSaver']);

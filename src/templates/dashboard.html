@@ -4,8 +4,16 @@
 			<leaflet id="map" lf-center="bucharest" markers="markers" layers="layers" width="100%" height="{{height-80}}" event-broadcast="events"></leaflet>
 		</div>
 		<span class="input-group-btn">
-			<button class="btn btn-success col-md-3" type="button" ng-click="addNewMarkers()" ng-disabled="markersReadyForCommit.length == 0">Adauga locatii<span class="fa fa-plus" style="padding-left: 5px;"></span></button>
+			<button class="btn btn-success col-md-2" type="button" ng-click="addNewMarkers()" ng-disabled="markersReadyForCommit.length == 0">Adauga locatii<span class="fa fa-plus" style="padding-left: 5px;"></span></button>
 			<button class="btn btn-success col-md-3" type="button" ng-click="deleteAddedMarkers()" ng-disabled="markersReadyForCommit.length == 0">Sterge locatii adaugate<span class="fa fa-minus" style="padding-left: 5px;"></span></button>
+			<button class="btn btn-success col-md-2" type="button" ng-click="exportLocations()">Exporta locatii<span class="fa fa-save" style="padding-left: 5px;"></span></button>
+
+			<input type="file" on-read-file="showContent($fileContent)" class="btn btn-success col-md-2"/>
+			<div ng-if="importedFileContent" class="col-md-2">
+				<h2>File content is:</h2>
+				<pre>{{ importedFileContent }}</pre>
+			</div>
+			<button class="btn btn-success col-md-2" type="button" ng-click="importLocations()">Importa locatii<span class="fa fa-save" style="padding-left: 5px;"></span></button>
 		</span>
 	</div>
 </div>
