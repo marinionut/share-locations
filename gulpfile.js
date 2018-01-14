@@ -336,8 +336,6 @@ gulp.task('express', function() {
 		var select_sql = "SELECT l.latitude, l.longitude, l.message, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
 		select_sql = mysql.format(select_sql, req.params.id);
 		dbConnection.query(select_sql, function(error, results, fields) {
-			console.log(results);
-			console.log(error);
 			if(results.length > 0) {
 				res.json(results);
 			} else {
@@ -347,7 +345,6 @@ gulp.task('express', function() {
 	});
 
 	router.put('/api/locations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
-		console.log("Request body:" + req.body);
 		var insert_sql = "INSERT INTO locations(latitude, longitude, message, uid) VALUES ";
 		for(var i=0; i<req.body.length; i++) {
 			insert_sql += "("+req.body[i].lat+", "+req.body[i].lng+", '"+req.body[i].message+"', "+req.params.id+")";
@@ -355,21 +352,15 @@ gulp.task('express', function() {
 				insert_sql += ", "
 		}
 		dbConnection.query(insert_sql, function(error, results, fields) {
-			console.log(results);
-			console.log(error);
 			res.send(results);
 		});
 	});
 
-    router.get('/api/exportLocations/:id', /*passport.authenticate('jwt', {session: false}),*/ function(req, res) {
+    router.get('/api/exportLocations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
         var select_sql = "SELECT l.latitude, l.longitude, l.message, l.uid FROM locations l, users u WHERE l.uid = u.id AND u.family = ?";
         select_sql = mysql.format(select_sql, req.params.id);
         dbConnection.query(select_sql, function(error, results, fields) {
-            console.log(results);
-            console.log(error);
             if(results.length > 0) {
-                // res.json(results);
-
                 var objs = [];
                 for (var i = 0;i < results.length; i++) {
                     objs.push({message: results[i].message,
@@ -385,7 +376,6 @@ gulp.task('express', function() {
     });
 
     router.put('/api/importLocations/:id', passport.authenticate('jwt', {session: false}), function(req, res) {
-        console.log("Request body:" + req.body);
         var insert_sql = "INSERT INTO locations(latitude, longitude, message, uid) VALUES ";
         for(var i=0; i<req.body.length; i++) {
             insert_sql += "("+req.body[i].latitude+", "+req.body[i].longitude+", '"+req.body[i].message+"', "+req.params.id+")";
@@ -394,11 +384,8 @@ gulp.task('express', function() {
         }
         dbConnection.query(insert_sql, function(error, results, fields) {
         	if (error !== null) {
-        		alert("Error on importing locations");
         		throw error;
 			}
-            console.log(results);
-            console.log(error);
             res.send(results);
         });
     });

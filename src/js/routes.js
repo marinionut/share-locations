@@ -26,10 +26,6 @@ angular.module('RDash')
                 url: '/familie',
                 templateUrl: 'templates/familie.html'
             })
-            .state('importExport', {
-                url: '/importExport',
-                templateUrl: 'templates/importExport.html'
-            })
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/login.html'

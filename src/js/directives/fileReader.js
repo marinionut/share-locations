@@ -1,8 +1,3 @@
-/**
- * Loading Directive
- * @see http://tobiasahlin.com/spinkit/
- */
-
 angular
     .module('RDash')
     .directive('onReadFile',['$parse', function($parse) {
@@ -17,7 +12,7 @@ angular
 
                 reader.onload = function(onLoadEvent) {
                     scope.$apply(function() {
-                        fn(scope, {$fileContent:onLoadEvent.target.result});
+                        fn(scope, {$fileContent:onLoadEvent.target.result, $fileName:onChangeEvent.srcElement.files[0].name});
                     });
                 };
 
